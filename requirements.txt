@@ -1,0 +1,4 @@
+pyrle==0.0.35
+hl7v2GenomicsExtractor==0.0.4
+hl7==0.4.5
+PyYAML==6.0

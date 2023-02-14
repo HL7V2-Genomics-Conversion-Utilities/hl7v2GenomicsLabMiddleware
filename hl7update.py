@@ -1,11 +1,5 @@
-import hl7
-import argparse
-import xml.etree.ElementTree as ET
 import glob, os
-import yaml
-from html.parser import HTMLParser
 import datetime
-import sys
 import xmltodict
 
 

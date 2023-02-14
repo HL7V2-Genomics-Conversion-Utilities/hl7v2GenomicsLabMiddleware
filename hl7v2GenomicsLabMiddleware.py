@@ -1,10 +1,5 @@
-import sys
-import yaml
-import pandas as pd
 import hl7
 import os
-from shutil import copyfile
-from shutil import move
 import hl7update
 import datetime
 from hl7v2GenomicsExtractor import Converter
@@ -13,19 +8,21 @@ cwd = os.getcwd()
 print(str(datetime.datetime.now()) + "\n")
 
 def main():
-    order_filename = 'ORDER-processed-3577-ca153521-9f2a-4125-b52b-73bcd32b9ee1.txt'
-    filename = 'XML_NQ-22-13_BC701503_295_20220314131838_GS700v3.QCIXml.xml'
 
-    ref_build="GRCh37"
-    patient_id=1234
-    seed=1
-    source_class="somatic"
-    variant_analysis_method="sequencing"
+    order_filename = os.getenv("order_filename")
+    filename = os.getenv("filename")
+
+    ref_build = os.getenv("ref_build")
+    patient_id = int(os.getenv("patient_id"))
+    seed = int(os.getenv("seed"))
+    source_class = os.getenv("source_class")
+    variant_analysis_method = os.getenv("variant_analysis_method")
     
-    plm = 'PLMO22-000383'
-    accessionId = ''
-    Perc_Target_Cells =  '50'
-    Perc_Tumor =  '50'
+    plm = os.getenv("plm")
+    accessionId = os.getenv("accessionId")
+    Perc_Target_Cells = os.getenv("Perc_Target_Cells")
+    Perc_Tumor = os.getenv("Perc_Tumor")
+    output_filename = os.getenv("output_filename")
 
     allhl7filenames = [order_filename]
 
@@ -69,7 +66,7 @@ def main():
                                              source_class=source_class,
                                              variant_analysis_method=variant_analysis_method)
 
-                            hl7_v2_message = conv.convert("hl7v2.txt")
+                            hl7_v2_message = conv.convert(output_filename)
 
                             obx_segments = []
                             for segment in hl7_v2_message.obx:
