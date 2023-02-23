@@ -10,19 +10,55 @@ print(str(datetime.datetime.now()) + "\n")
 def main():
 
     order_filename = os.getenv("order_filename")
+    if not order_filename:
+        raise Exception("order_filename must be supplied")
+
     filename = os.getenv("filename")
+    if not filename:
+        raise Exception("filename must be supplied")
 
     ref_build = os.getenv("ref_build")
-    patient_id = int(os.getenv("patient_id"))
-    seed = int(os.getenv("seed"))
+    if not ref_build or ref_build not in ["GRCh37", "GRCh38"]:
+            raise Exception(
+                'You must provide build number ("GRCh37" or "GRCh38")')
+
+    patient_id = os.getenv("patient_id")
+    if not patient_id:
+        raise Exception("patient_id must be supplied")
+    else:
+        patient_id = int(patient_id)
+
+    seed = os.getenv("seed")
+    if not seed:
+        seed = 1000
+    else:
+        seed = int(seed)
+
     source_class = os.getenv("source_class")
+
     variant_analysis_method = os.getenv("variant_analysis_method")
+    if not variant_analysis_method:
+        variant_analysis_method = "Sequencing"
     
     plm = os.getenv("plm")
+    if not plm:
+        raise Exception("plm must be supplied")
+
     accessionId = os.getenv("accessionId")
+    if not accessionId:
+        raise Exception("accessionId must be supplied")
+
     Perc_Target_Cells = os.getenv("Perc_Target_Cells")
+    if not Perc_Target_Cells:
+        raise Exception("Perc_Target_Cells must be supplied")
+
     Perc_Tumor = os.getenv("Perc_Tumor")
+    if not Perc_Tumor:
+        raise Exception("Perc_Tumor must be supplied")
+
     output_filename = os.getenv("output_filename")
+    if not output_filename:
+        raise Exception("output_filename must be supplied")
 
     allhl7filenames = [order_filename]
 
@@ -63,7 +99,7 @@ def main():
                         if h:
                             conv = Converter(filename=filename, ref_build=ref_build,
                                              patient_id=patient_id, seed=seed,
-                                             source_class=source_class,
+                                             source_class=source_class, vcf_type="snpeff",
                                              variant_analysis_method=variant_analysis_method)
 
                             hl7_v2_message = conv.convert(output_filename)
