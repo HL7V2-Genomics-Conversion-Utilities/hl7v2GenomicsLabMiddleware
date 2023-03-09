@@ -12,7 +12,17 @@ def main():
 	with open(hl7_filename) as f:
 		message = f.readlines()
 	
-	last_obx_index = int(message[-1].split("|")[1])
+	try:
+		last_obx_index = int(message[-1].split("|")[1])
+	except Exception as e:
+		print("Last OBX Index not found")
+		print(f"Error -> {e}")
+
+	try:
+		date = int(message[0].split("|")[6])
+	except Exception as e:
+		print("Date not found")
+		print(f"Error -> {e}")
 
 	start_from_index = last_obx_index + 1
 
@@ -27,8 +37,23 @@ def main():
 			obx.obx_1 = str(start_from_index)
 			obx.obx_2 = "ST"
 			obx.obx_3 = str(key)
-			obx.obx_4 = '3'
+			obx.obx_4 = ''
 			obx.obx_5 = str(value)
+			obx.obx_6 = ''
+			obx.obx_7 = '-'
+			obx.obx_8 = ''
+			obx.obx_9 = ''
+			obx.obx_10 = ''
+			obx.obx_11 = 'P'
+			obx.obx_12 = ''
+			obx.obx_13 = ''
+			obx.obx_14 = f'{date}'
+			obx.obx_15 = ''
+			obx.obx_16 = ''
+			obx.obx_17 = '2'
+			obx.obx_18 = 'UFHPL GatorSeq'
+			obx.obx_19 = f'{date}'
+
 			obx_segments_to_add.add(obx)
 			start_from_index += 1
 

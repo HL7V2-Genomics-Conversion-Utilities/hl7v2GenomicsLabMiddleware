@@ -65,7 +65,8 @@ def main():
     for hl7_file_name in allhl7filenames:
         try:
             hl7file = open(hl7_file_name, mode="r").read()
-        except:
+        except Exception as e:
+            print(f"Error rreading hl7 file {hl7_file_name} : {e}")
             continue
         
         arr = hl7file.split("\n\n")
@@ -121,5 +122,7 @@ def main():
                             print("Couldn't replace '-' in hl7. Check logs for more details!")
                     else:
                         print("XML was not yet generated for the  " + accessionId)
+            else:
+                print("No hl7 message")
 
 main()
