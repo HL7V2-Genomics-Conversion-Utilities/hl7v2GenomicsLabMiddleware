@@ -3,6 +3,7 @@ import os
 import hl7update
 import datetime
 from hl7v2GenomicsExtractor import Converter
+import script
 
 cwd = os.getcwd()
 print(str(datetime.datetime.now()) + "\n")
@@ -59,6 +60,8 @@ def main():
     output_filename = os.getenv("output_filename")
     if not output_filename:
         raise Exception("output_filename must be supplied")
+
+    additional_lab_values_excel = os.getenv("additional_lab_values_excel")
 
     allhl7filenames = [order_filename]
 
@@ -117,6 +120,9 @@ def main():
                                 f.write("\n")
                                 f.write(obx_segments_string)
                             print("Out file available at :",out_file_path)
+
+                            if additional_lab_values_excel:
+                                script.add_additional_lab_values(out_file_path, additional_lab_values_excel)
  
                         else:
                             print("Couldn't replace '-' in hl7. Check logs for more details!")

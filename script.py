@@ -1,11 +1,7 @@
 import hl7apy.core as hl7
 import pandas as pd
-import os
 
-def main():
-
-	hl7_filename = os.getenv("hl7_filename")
-	excel_filename = os.getenv("excel_filename")
+def add_additional_lab_values(hl7_filename, excel_filename):
 
 	obx_segments_to_add = hl7.Message("ORU_R01")
 
@@ -63,5 +59,3 @@ def main():
 			print(segment)
 			output_file.write(segment.to_er7().replace(r"\R\\", "~"))
 			output_file.write('|\n')
-
-main()
